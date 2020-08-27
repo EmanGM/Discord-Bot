@@ -52,6 +52,12 @@ async def mensagem_resposta(ctx):
     await ctx.send("Ora boas!")
 
 
+@bot.command(name = 'identifica-te')
+async def mensagem_resposta(ctx):
+
+    await ctx.send("Eu sou um bot criado pelo Deus Eman!")
+
+
 @bot.event
 async def on_error(evento, *args, **kargs):
     with open("err.log", 'a') as f:

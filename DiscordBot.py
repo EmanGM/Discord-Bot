@@ -51,6 +51,11 @@ async def mensagem_resposta(ctx):
 
     await ctx.send("Ora boas!")
 
+@bot.command(name = 'micas')
+async def mensagem_resposta(ctx):
+
+    await ctx.send("Miau!")
+
 
 @bot.command(name = 'identifica-te')
 async def mensagem_resposta(ctx):

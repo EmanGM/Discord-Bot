@@ -56,11 +56,37 @@ async def mensagem_resposta(ctx):
 
     await ctx.send("Miau!")
 
+@bot.command(name = 'imagem')
+async def mensagem(ctx):
+
+    await ctx.send(file=discord.File('gorila.jpg'))
+
 
 @bot.command(name = 'identifica-te')
 async def mensagem_resposta(ctx):
 
     await ctx.send("Eu sou um bot criado pelo Deus Eman!")
+
+def is_me(m):
+    return m.author == bot.user
+
+@bot.command()
+async def clear(ctx, amount = 5):
+    await ctx.channel.purge(limit = amount, check = is_me)
+    await ctx.send("Fiz-te o favor e apagei {} mensagens.".format(amount))
+
+
+@bot.command()
+async def embed(ctx):
+    embed = discord.Embed(title = ">Caixa", description = "teste", colour = discord.Colour.orange())
+    embed.set_footer(text = "rodapé")
+    embed.set_image(url = "https://static.dicionariodesimbolos.com.br/upload/8e/29/laranja-1_xl.png")
+    embed.set_author(name = "O próprio! ")
+    embed.set_thumbnail(url = 'https://static.dicionariodesimbolos.com.br/upload/8e/29/laranja-1_xl.png')
+    embed.add_field(name = "comandos", value = "todos os possíveis")
+    embed.add_field(name = "copos", value = "qualquer um", inline = True)
+
+    await ctx.send(embed = embed)
 
 
 @bot.event

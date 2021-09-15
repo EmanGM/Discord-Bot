@@ -4,6 +4,7 @@ cffi==1.14.5
 chardet==4.0.0
 cryptography==3.4.7
 cycler==0.10.0
+discord==1.7.3
 future==0.18.2
 matplotlib==3.3.2
 numpy==1.19.2

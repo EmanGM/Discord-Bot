@@ -11,7 +11,7 @@ import ffmpeg
 #from dotenv import load_dotenv, find_dotenv
 
 #variáveis deveriam ser descarregadas a partir do ficheiro .env
-#mas não condigo pôr isso a funcionar
+#mas não consigo pôr isso a funcionar
 #load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 

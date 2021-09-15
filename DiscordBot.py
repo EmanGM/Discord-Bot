@@ -19,7 +19,7 @@ TOKEN = 'NzM0NDkzNjEwMDc4MTA5NzI3.XxSgeg.FShbtoPETMDrplvWN0TQmxRsCeg'
 #GUILD = 'RealPythonTutorialBotServer'
 GUILD = "☭ USSR ☭"
 
-bot = commands.Bot(command_prefix = '!')
+bot = commands.Bot(command_prefix = '.')
 
 """
 @bot.event

@@ -16,7 +16,7 @@ import ffmpeg
 #load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-TOKEN = 'NzM0NDkzNjEwMDc4MTA5NzI3.XxSgeg.RZ-ovZT2esOobyeORrFmWaAFmYI'
+TOKEN = 'NzM0NDkzNjEwMDc4MTA5NzI3.XxSgeg.kUEz2NJOuiKCSakFGNp8od5rxpE'
 
 
 bot = commands.Bot(command_prefix = '.')

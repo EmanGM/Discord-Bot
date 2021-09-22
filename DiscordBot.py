@@ -1,6 +1,7 @@
 import os
 
 import random
+import asyncio
 
 import discord
 from discord.ext import commands
@@ -36,7 +37,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(member):
     await member.create_dm()
-    await member.dm_channel.send(f'Boooooas {member.name}, welcome to Russia Discord server!')
+    await member.dm_channel.send(f'Boooooas {member.name}, bem-vindo ao servidor {member.guild}!')
 
 
 @bot.command(name = 'puta')
@@ -54,10 +55,6 @@ async def hello(ctx):
 
     await ctx.send("Ora boas!")
 
-@bot.command(name = 'micas')
-async def mensagem_resposta(ctx):
-
-    await ctx.send("Miau!")
 
 @bot.command(name = 'imagem')
 async def mensagem(ctx):
@@ -110,14 +107,36 @@ async def roll(ctx, n_dados: int, n_faces: int):
     await ctx.send(", ".join(dado))
 
 
+@bot.command()
+async def comandos(ctx):
+
+    helpUI = discord.Embed(title = "Comandos disponíveis:", description = "", colour = discord.Colour.blurple())
+    #embed.set_image(url = "https://static.dicionariodesimbolos.com.br/upload/8e/29/laranja-1_xl.png")
+    helpUI.set_image(url = 'https://drive.google.com/file/d/1-6g7UcvAHSsCX2nWFnodpaFQZ4unOyTO/view')
+    #embed.set_author(name = "O próprio! ")
+    #embed.set_thumbnail(url = 'https://static.dicionariodesimbolos.com.br/upload/8e/29/laranja-1_xl.png')
+    helpUI.add_field(name = "clear [x]", value = "apaga x mensagens do chat (se x não for especificado elimina 5)", inline = False)
+    helpUI.add_field(name = "play [url ou pesquisa]", value = "mete a música pretendida a tocar", inline = False) # inline = True
+    helpUI.add_field(name = "pause", value = "mete a música em pausa", inline = False)
+    helpUI.add_field(name = "resume", value = "tira a música da pausa", inline = False)
+    helpUI.add_field(name = "leave", value = "desconectar-me de uma sala de voz", inline = False)
+    helpUI.add_field(name = "skip", value = "elimina a música que está a tocar e apaga-a", inline = False)
+    helpUI.add_field(name = "comandos", value = "mostra esta mensagem", inline = False)
+    helpUI.set_footer(text = "qualquer outra coisa que peçam para eu fazer poderá não ter qualquer efeito")
+    await ctx.send(embed = helpUI)
+
+
 #music
 @bot.command()
 async def play(ctx, *url):
 
+    if ctx.author.voice == None:
+        await ctx.send("Não estás conectado a nenhuma sala de voz!")
+        return
+
     if url == ():
         await ctx.send("Não especificaste a música que queres ouvir \uFE0F!")
         return
-        
     str2search = ' '.join(url)
 
     FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
@@ -141,11 +160,29 @@ async def play(ctx, *url):
         source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
         voice.play(source)
 
-    if not voice.is_playing():
-        await voice.disconnect()
-        await voiceChannel.disconnect()
+    while True:
+        await asyncio.sleep(20)
 
+        if not voice.is_playing():
+            await voice.disconnect()
+            print("Cheack exit")
+            #await voiceChannel.disconnect()
+            break
 
+@bot.event
+async def on_voice_state_update(member, before, after):
+    
+    if member.id == bot.user.id:
+        print("Bot triggered voice_changed event")
+        #if before.voice.channel != None and after.voice.channel:
+            #return
+    else:
+        print("Member {} in guild {} triggered voice_changed event".format(member, member.guild))
+        if before.channel and after.channel == None:
+            if len(before.channel.members) == 1:
+                print("chat vazio")
+                voice = discord.utils.get(bot.voice_clients, guild = member.guild)
+                await voice.disconnect()
 
 @bot.command()
 async def leave(ctx):
@@ -178,14 +215,15 @@ async def resume(ctx):
         await ctx.send("Música em play \u25B6")
 
 
-
 @bot.command()
 async def stop(ctx):
     voice = ctx.voice_client
     voice.stop()
 
-
-
+@bot.command()
+async def skip(ctx): #O objetivo é invokar a função stop
+    voice = ctx.voice_client
+    voice.stop()
 
 
 

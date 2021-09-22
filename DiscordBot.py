@@ -72,7 +72,7 @@ async def clear(ctx, amount = 5):
     await ctx.channel.purge(limit = amount)
     await ctx.send("Utilizaste o comando \"clear\" portanto fiz-te o favor e apagei {} mensagens.".format(amount))
 
-#Esta função é apenas um test
+#Esta função é apenas um teste
 @bot.command()
 async def embed(ctx):
     embed = discord.Embed(title = "Caixa", description = "teste", colour = discord.Colour.orange())
@@ -217,7 +217,6 @@ async def stop(ctx):
 async def skip(ctx): #O objetivo é invokar a função stop
     voice = ctx.voice_client
     voice.stop()
-
 
 
 bot.run(TOKEN)

@@ -16,9 +16,8 @@ import ffmpeg
 #load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-TOKEN = 'NzM0NDkzNjEwMDc4MTA5NzI3.XxSgeg.FShbtoPETMDrplvWN0TQmxRsCeg'
-#GUILD = 'RealPythonTutorialBotServer'
-GUILD = "☭ USSR ☭"
+TOKEN = 'NzM0NDkzNjEwMDc4MTA5NzI3.XxSgeg.RZ-ovZT2esOobyeORrFmWaAFmYI'
+
 
 bot = commands.Bot(command_prefix = '.')
 
@@ -43,9 +42,10 @@ async def on_member_join(member):
 @bot.command(name = 'puta')
 async def mensagem_resposta(ctx):
 
-    brooklyn_99_quotes = ['Prazer em conhecer-te, posso-te ir ao cúe?']
+    quotes = ['Prazer em conhecer-te, posso-te ir ao cúe?']
+    #ir buscar ideias a 'https://gist.github.com/inescoelho/4a2e848480d2026121f8d5c600ee3c66'
 
-    response = random.choice(brooklyn_99_quotes)
+    response = random.choice(quotes)
     await ctx.send(response)
    # elif message.content == "levantar erro!":
     #    raise discord.DiscordException
@@ -68,20 +68,14 @@ async def mensagem_resposta(ctx):
 
 
 @bot.command()
-async def func(ctx):
-    if name == "3":
-        await ctx.send("numero 3")
-
-
-@bot.command()
 async def clear(ctx, amount = 5):
     await ctx.channel.purge(limit = amount)
     await ctx.send("Utilizaste o comando \"clear\" portanto fiz-te o favor e apagei {} mensagens.".format(amount))
 
-
+#Esta função é apenas um test
 @bot.command()
 async def embed(ctx):
-    embed = discord.Embed(title = ">Caixa", description = "teste", colour = discord.Colour.orange())
+    embed = discord.Embed(title = "Caixa", description = "teste", colour = discord.Colour.orange())
     embed.set_footer(text = "rodapé")
     #embed.set_image(url = "https://static.dicionariodesimbolos.com.br/upload/8e/29/laranja-1_xl.png")
     embed.set_image(url = 'https://drive.google.com/file/d/1-6g7UcvAHSsCX2nWFnodpaFQZ4unOyTO/view')
@@ -165,8 +159,7 @@ async def play(ctx, *url):
 
         if not voice.is_playing():
             await voice.disconnect()
-            print("Cheack exit")
-            #await voiceChannel.disconnect()
+            print("bot exit voice channel")
             break
 
 @bot.event
@@ -224,8 +217,6 @@ async def stop(ctx):
 async def skip(ctx): #O objetivo é invokar a função stop
     voice = ctx.voice_client
     voice.stop()
-
-
 
 
 

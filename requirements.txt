@@ -1,11 +1,4 @@
-cffi==1.14.5
-chardet==4.0.0
-cycler==0.10.0
 discord==1.7.3
-future==0.18.2
 ffmpeg
 PyNaCl
-python-dateutil==2.8.1
-six==1.15.0
-sortedcontainers==2.4.0
 youtube_dl

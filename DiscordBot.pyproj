@@ -23,9 +23,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DiscordBot.py" />
+    <Compile Include="cogs\Music.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Variables.txt">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="gorila.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cogs\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -6,20 +6,30 @@ import asyncio
 import discord
 from discord.ext import commands
 
-import youtube_dl
-import ffmpeg
 
 #from dotenv import load_dotenv, find_dotenv
 
 #variáveis deveriam ser descarregadas a partir do ficheiro .env
 #mas não consigo pôr isso a funcionar
 #load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-
-TOKEN = 'NzM0NDkzNjEwMDc4MTA5NzI3.XxSgeg.kUEz2NJOuiKCSakFGNp8od5rxpE'
+#TOKEN = os.getenv('DISCORD_TOKEN')
 
 
 bot = commands.Bot(command_prefix = '.')
+
+def main():
+
+    file = open("Variables.txt", "r")
+    TOKEN = file.readline().strip()
+    file.close()
+
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            bot.load_extension("cogs.{}".format(filename[:-3]))
+
+    bot.run(TOKEN)
+
+
 
 """
 @bot.event
@@ -114,109 +124,14 @@ async def comandos(ctx):
     helpUI.add_field(name = "pause", value = "mete a música em pausa", inline = False)
     helpUI.add_field(name = "resume", value = "tira a música da pausa", inline = False)
     helpUI.add_field(name = "leave", value = "desconectar-me de uma sala de voz", inline = False)
-    helpUI.add_field(name = "skip", value = "elimina a música que está a tocar e apaga-a", inline = False)
+    helpUI.add_field(name = "skip", value = "salta para a música seguinte", inline = False)
+    helpUI.add_field(name = "stop", value = "elimina todas as música da lista de reprodução", inline = False)
+    helpUI.add_field(name = "fila", value = "visualizar lista de reprodução", inline = False)
     helpUI.add_field(name = "comandos", value = "mostra esta mensagem", inline = False)
     helpUI.set_footer(text = "qualquer outra coisa que peçam para eu fazer poderá não ter qualquer efeito")
     await ctx.send(embed = helpUI)
 
 
-#music
-@bot.command()
-async def play(ctx, *url):
 
-    if ctx.author.voice == None:
-        await ctx.send("Não estás conectado a nenhuma sala de voz!")
-        return
-
-    if url == ():
-        await ctx.send("Não especificaste a música que queres ouvir \uFE0F!")
-        return
-    str2search = ' '.join(url)
-
-    FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
-    YDL_OPTIONS = {'format':'bestaudio', 'default_search': 'auto'}
-
-    voiceChannel = discord.utils.get(ctx.guild.voice_channels, id = ctx.author.voice.channel.id)
-    try:
-        await voiceChannel.connect()
-    except:
-        print("Error")
-    voice = discord.utils.get(bot.voice_clients, guild = ctx.guild)
-
-
-    with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
-        info = ydl.extract_info(str2search, download = False)
-
-        if 'formats' in info: #caso de pesquisa por url
-            url2 = info['formats'][0]['url']
-        elif 'entries' in info: #caso de pesquisa por palavras
-            url2 = info['entries'][0]['formats'][0]['url']
-        source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-        voice.play(source)
-
-    while True:
-        await asyncio.sleep(20)
-
-        if not voice.is_playing():
-            await voice.disconnect()
-            print("bot exit voice channel")
-            break
-
-@bot.event
-async def on_voice_state_update(member, before, after):
-    
-    if member.id == bot.user.id:
-        print("Bot triggered voice_changed event")
-        #if before.voice.channel != None and after.voice.channel:
-            #return
-    else:
-        print("Member {} in guild {} triggered voice_changed event".format(member, member.guild))
-        if before.channel and after.channel == None:
-            if len(before.channel.members) == 1:
-                print("chat vazio")
-                voice = discord.utils.get(bot.voice_clients, guild = member.guild)
-                await voice.disconnect()
-
-@bot.command()
-async def leave(ctx):
-
-    voice = ctx.voice_client
-    if voice.is_connected():
-        await voice.disconnect()
-    else:
-        await ctx.send("Não estou conectado a um canal!")
-
-@bot.command()
-async def pause(ctx):
-
-    voice = ctx.voice_client
-    if voice == None or not voice.is_playing():
-        await ctx.send("Não estou a exibir música")
-    else: 
-        voice.pause()
-        await ctx.send("Música em Pausa \u23F8")
-
-
-@bot.command()
-async def resume(ctx):
-    
-    voice = ctx.voice_client
-    if voice == None or not voice.is_paused():
-        await ctx.send("Não está nenhuma música em pausa")
-    else:
-        voice.resume()
-        await ctx.send("Música em play \u25B6")
-
-
-@bot.command()
-async def stop(ctx):
-    voice = ctx.voice_client
-    voice.stop()
-
-@bot.command()
-async def skip(ctx): #O objetivo é invokar a função stop
-    voice = ctx.voice_client
-    voice.stop()
-
-
-bot.run(TOKEN)
+if __name__ == "__main__":
+    main()

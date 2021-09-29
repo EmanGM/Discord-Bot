@@ -16,8 +16,8 @@ class Music(commands.Cog):
 
     #Comandos
     @commands.command()
-    async def ping(self, ctx):
-        await ctx.send("Pong")
+    async def add(self, ctx):
+        await ctx.send("Comando inválido, utiliza antes '.play'")
 
     async def play_music(self, ctx):
         FFMPEG_OPTIONS = {'before_options':'-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options':'-vn'}
@@ -126,18 +126,24 @@ class Music(commands.Cog):
         
         if self.voice:
             self.voice.stop()
+            await ctx.send("Musica saltada \u23ED")
 
     @commands.command(name = "fila", aliases=["queue", "q", "lista"])
     async def fila(self, ctx):
 
         if self.playList:
-            queue = discord.Embed(title = "Fila de reprodução", colour = discord.Colour.orange())
+            queue = discord.Embed(title = "Fila de reprodução", colour = discord.Colour.dark_orange())
             for i, music in enumerate(self.playList):
                 queue.add_field(name = "{}) {}".format(i + 1, music['title']), value = music['video_url'], inline = False)
 
             await ctx.send(embed = queue)
         else:
             await ctx.send("Não existe nenhuma lista de reprodução")
+    
+    @commands.command(name = "DIGA")
+    async def diga_um(self, ctx, um):
+        if um == "UM":
+            await ctx.invoke(self.bot.get_command('play'), "https://www.youtube.com/watch?v=HUtMwiCnVCE")
 
 
     #Eventos
@@ -151,11 +157,16 @@ class Music(commands.Cog):
         else:
             print("Member id {} in guild {} triggered voice_changed event".format(member.discriminator, member.guild))
             #Se for o Subtil ou o Ric, mandar mensagem
-            if member.discriminator == '6000' or member.discriminator == '6947': 
+            if member.discriminator == '0017' or member.discriminator == '6077': 
                 await member.create_dm()
-                await member.dm_channel.send("Boas patinho obelinha!")
+                if before.channel == None:
+                    emoji = discord.utils.get(self.bot.emojis, name=':money_mouth')
+                    await member.dm_channel.send("Boas patinho:duck:  obelinha:sheep:!  :money_mouth:")
+                elif after.channel == None:
+                    emoji = discord.utils.get(self.bot.emojis, name=':pleading_face')
+                    await member.dm_channel.send("Já bais, patinho:duck:  obelinha:sheep:?  :pleading_face:")
             if before.channel and after.channel == None:
-                if len(before.channel.members) == 1:
+                if len(before.channel.members) == 1 and self.voice != None:
                     print("chat vazio")
                     #voice = discord.utils.get(bot.voice_clients, guild = member.guild)
                     await self.voice.disconnect()

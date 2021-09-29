@@ -115,20 +115,18 @@ async def roll(ctx, n_dados: int, n_faces: int):
 async def comandos(ctx):
 
     helpUI = discord.Embed(title = "Comandos disponíveis:", description = "", colour = discord.Colour.blurple())
-    #embed.set_image(url = "https://static.dicionariodesimbolos.com.br/upload/8e/29/laranja-1_xl.png")
-    helpUI.set_image(url = 'https://drive.google.com/file/d/1-6g7UcvAHSsCX2nWFnodpaFQZ4unOyTO/view')
-    #embed.set_author(name = "O próprio! ")
-    #embed.set_thumbnail(url = 'https://static.dicionariodesimbolos.com.br/upload/8e/29/laranja-1_xl.png')
+
     helpUI.add_field(name = "clear [x]", value = "apaga x mensagens do chat (se x não for especificado elimina 5)", inline = False)
     helpUI.add_field(name = "play [url ou pesquisa]", value = "mete a música pretendida a tocar", inline = False) # inline = True
     helpUI.add_field(name = "pause", value = "mete a música em pausa", inline = False)
     helpUI.add_field(name = "resume", value = "tira a música da pausa", inline = False)
-    helpUI.add_field(name = "leave", value = "desconectar-me de uma sala de voz", inline = False)
+    #helpUI.add_field(name = "leave", value = "desconectar-me de uma sala de voz", inline = False)
     helpUI.add_field(name = "skip", value = "salta para a música seguinte", inline = False)
-    helpUI.add_field(name = "stop", value = "elimina todas as música da lista de reprodução", inline = False)
-    helpUI.add_field(name = "fila", value = "visualizar lista de reprodução", inline = False)
+    helpUI.add_field(name = "stop", value = "elimina todas as músicas da lista de reprodução", inline = False)
+    helpUI.add_field(name = "fila", value = "visualizar a lista de reprodução", inline = False)
+    helpUI.add_field(name = "DIGA UM", value = "comando auto explicativo", inline = False)
     helpUI.add_field(name = "comandos", value = "mostra esta mensagem", inline = False)
-    helpUI.set_footer(text = "qualquer outra coisa que peçam para eu fazer poderá não ter qualquer efeito")
+    helpUI.add_field(name = "\u200B", value = "Para fazer melhorias ou acrescentar funcionalidades, falar com o Eman ou então modifica-me em https://github.com/Eragon30/Discord-Bot")
     await ctx.send(embed = helpUI)
 
 

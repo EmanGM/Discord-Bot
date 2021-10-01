@@ -78,6 +78,7 @@ class Music(commands.Cog):
                     self.playList = [self.playList.pop()] if len(self.playList) > 1 else []
                     if not self.playList:
                         await self.voice.disconnect()
+                        self.voice = None
                         print("bot exit voice channel")
                         break
                     else:
@@ -156,8 +157,8 @@ class Music(commands.Cog):
                 #returnhe
         else:
             print("Member id {} in guild {} triggered voice_changed event".format(member.discriminator, member.guild))
-            #Se for o Subtil ou o Ric, mandar mensagem
-            if member.discriminator == '0017' or member.discriminator == '6077': 
+            #Se for o Ric, mandar mensagem
+            if member.discriminator == '6077': 
                 await member.create_dm()
                 if before.channel == None:
                     emoji = discord.utils.get(self.bot.emojis, name=':money_mouth')
@@ -165,6 +166,12 @@ class Music(commands.Cog):
                 elif after.channel == None:
                     emoji = discord.utils.get(self.bot.emojis, name=':pleading_face')
                     await member.dm_channel.send("Já bais, patinho:duck:  obelinha:sheep:?  :pleading_face:")
+            #Se for o João Paulo a entrar, tocar o hino de USSR
+            elif member.discriminator == '6947' and before.channel == None and after.channel != None:
+                await ctx.invoke(self.bot.get_command('stop'))
+                await ctx.invoke(self.bot.get_command('play'), "https://www.youtube.com/watch?v=U06jlgpMtQs")
+                await asyncio.sleep(22)
+                await ctx.invoke(self.bot.get_command('stop'))
             if before.channel and after.channel == None:
                 if len(before.channel.members) == 1 and self.voice != None:
                     print("chat vazio")

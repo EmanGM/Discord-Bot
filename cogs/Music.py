@@ -43,7 +43,7 @@ class Music(commands.Cog):
         try:
             await voiceChannel.connect()
         except:
-            print("Já connectado a uma sala de voz")
+            print("Já conectado a uma sala de voz")
 
          
         if self.voice != None:
